@@ -23,7 +23,7 @@ export class AppComponent {
   }
 
   startCountdown(): void {
-    const launchDate = new Date('2025-08-15T00:00:00').getTime();
+    const launchDate = new Date('2025-08-01T00:00:00').getTime();
     
     this.countdownInterval = setInterval(() => {
       const now = new Date().getTime();

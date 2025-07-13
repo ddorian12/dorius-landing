@@ -57,6 +57,7 @@
 .logo {
   width: 180px;
   transition: transform 0.4s ease, filter 0.4s ease;
+  animation: float 3s ease-in-out infinite;
 }
 
 .logo:hover {
@@ -89,7 +90,7 @@
 }
 
 .time-block {
-  background: linear-gradient(145deg, #f7fafc, #e2e8f0);
+  background: linear-gradient(145deg, #f7fafc, #5a3c8a);
   border-radius: 10px;
   padding: 1rem;
   min-width: 90px;
@@ -149,7 +150,7 @@
 .icon {
   width: 26px;
   height: 26px;
-  fill: #4c1d95;
+  fill: #7d58b7;
 }
 
 .social-icon:hover .icon {
@@ -253,3 +254,16 @@
     opacity: 1;
   }
 }
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
