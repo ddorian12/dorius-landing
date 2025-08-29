@@ -34,7 +34,7 @@ export interface SellerEarlyAccessDto {
 @Injectable({ providedIn: 'root' })
 export class SellerEarlyAccessService {
   private http = inject(HttpClient);
-  private baseUrl = '"https://dorius-api-dwcbe4ereed9bpce.northeurope-01.azurewebsites.net/api';
+  private baseUrl = "https://dorius-api-dwcbe4ereed9bpce.northeurope-01.azurewebsites.net/api";
 
   submitLead(payload: SellerEarlyAccessDto) {
     return this.http.post<void>(`${this.baseUrl}/seller/seller-early-access`, payload, { withCredentials: false });
