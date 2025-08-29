@@ -13,10 +13,13 @@
     </p>
 
     <div class="announcement">
-      <span class="badge">Înscrieri deschise</span>
+      <span class="badge">A început <strong>Etapa 1</strong> — Înscrieri pentru selleri</span>
       <p class="status-line">🛠️ Site-ul este în lucru.</p>
+
+      <div class="loader dorius"></div>
+
       <p class="status-line">
-        🚀 Curând lansăm oficial aplicația. Între timp, <strong>înscrierile pentru selleri sunt deschise</strong>.
+        🚀 Curând lansăm oficial aplicația. Între timp, <strong>te poți alătura printre primii vânzători pe Dorius.</strong>.
       </p>
       <button
         class="btn-primary"
@@ -63,13 +66,15 @@
       </button>
     </div>
   </div>
-
 </div>
 
-<div class="sticky-bar">
-  <span>Înscrierile pentru vânzători sunt deschise — completează formularul de mai jos.</span>
+<!-- Sticky bar: vizibilă doar când NU suntem pe formular și NU am trimis -->
+<div class="sticky-bar" *ngIf="!hideStickyBar">
+  <span>Completează formularul pentru a te înscrie ca vânzător.</span>
 </div>
 
 <div id="formSection" #formSection *ngIf="formVisible" class="form-section">
-  <app-seller-early-access></app-seller-early-access>
+  <app-seller-early-access
+    (submittedChange)="onFormSubmitted($event)">
+  </app-seller-early-access>
 </div>

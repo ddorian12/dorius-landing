@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -10,7 +10,6 @@ type Readiness = 'now' | 'later';
 type Fulfillment = 'own' | 'pod' | 'reseller' | 'dropshipping';
 
 interface FormShape {
-  // existente
   email: FormControl<string>;
   brandName: FormControl<string>;
   productScope: FormControl<ProductScope>;
@@ -20,14 +19,12 @@ interface FormShape {
   acceptTerms: FormControl<boolean>;
   company: FormControl<string>; // honeypot
 
-  // noi - obligatorii
   contactName: FormControl<string>;
   city: FormControl<string>;
   country: FormControl<string>;
   currentChannels: FormControl<string[]>;
   readiness: FormControl<Readiness>;
 
-  // noi - opționale
   instagram: FormControl<string>;
   tiktok: FormControl<string>;
   estOrdersPerMonth: FormControl<string>;
@@ -45,8 +42,9 @@ interface FormShape {
   styleUrls: ['./seller-early-access.component.scss']
 })
 export class SellerEarlyAccessComponent implements OnDestroy {
+  @Output() submittedChange = new EventEmitter<boolean>();   // 👈 pentru sticky bar
+
   form: FormGroup<FormShape> = this.fb.group<FormShape>({
-    // existente
     email: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.email, Validators.maxLength(120)] }),
     brandName: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.maxLength(40)] }),
     productScope: this.fb.nonNullable.control<ProductScope>('Digital', { validators: [Validators.required] }),
@@ -54,16 +52,14 @@ export class SellerEarlyAccessComponent implements OnDestroy {
     website: this.fb.nonNullable.control('', { validators: [Validators.maxLength(200)] }),
     legalStatus: this.fb.nonNullable.control('', { validators: [Validators.required] }),
     acceptTerms: this.fb.nonNullable.control(false, { validators: [Validators.requiredTrue] }),
-    company: this.fb.nonNullable.control(''), // honeypot
+    company: this.fb.nonNullable.control(''),
 
-    // noi – obligatorii
     contactName: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.maxLength(60)] }),
     city:        this.fb.nonNullable.control('', { validators: [Validators.required, Validators.maxLength(60)] }),
     country:     this.fb.nonNullable.control('RO', { validators: [Validators.required] }),
     currentChannels: this.fb.nonNullable.control<string[]>([]),
     readiness:   this.fb.nonNullable.control<Readiness>('now', { validators: [Validators.required] }),
 
-    // noi – opționale
     instagram: this.fb.nonNullable.control('', { validators: [Validators.maxLength(120)] }),
     tiktok: this.fb.nonNullable.control('', { validators: [Validators.maxLength(120)] }),
     estOrdersPerMonth: this.fb.nonNullable.control(''),
@@ -102,7 +98,6 @@ export class SellerEarlyAccessComponent implements OnDestroy {
   ];
 
   channelsOptions = ['Website', 'Instagram', 'TikTok', 'Etsy', 'eMAG', 'Alt marketplace'];
-
   estOrdersOptions = ['0–10', '10–50', '50–200', '200+'];
 
   fulfillmentOptions: {label: string; value: Fulfillment}[] = [
@@ -116,7 +111,7 @@ export class SellerEarlyAccessComponent implements OnDestroy {
 
   constructor(private fb: FormBuilder, private service: SellerEarlyAccessService) {}
 
-  // Getters pentru template
+  // Getters
   get email() { return this.form.controls.email; }
   get brandName() { return this.form.controls.brandName; }
   get productScope() { return this.form.controls.productScope; }
@@ -130,10 +125,7 @@ export class SellerEarlyAccessComponent implements OnDestroy {
   get readiness() { return this.form.controls.readiness; }
   get currentChannels() { return this.form.controls.currentChannels; }
 
-  // chips helpers
-  hasChannel(ch: string) {
-    return this.currentChannels.value.includes(ch);
-  }
+  hasChannel(ch: string) { return this.currentChannels.value.includes(ch); }
   toggleChannel(ch: string) {
     const cur = [...this.currentChannels.value];
     const idx = cur.indexOf(ch);
@@ -147,6 +139,7 @@ export class SellerEarlyAccessComponent implements OnDestroy {
     // honeypot
     if (this.form.controls.company.value.trim()) {
       this.submitted = true;
+      this.submittedChange.emit(true);   // 👈 anunțăm părintele
       return;
     }
 
@@ -158,7 +151,6 @@ export class SellerEarlyAccessComponent implements OnDestroy {
     this.submitting = true;
 
     const payload = {
-      // existente
       email: this.email.value,
       brandName: this.brandName.value,
       productScope: this.productScope.value,
@@ -166,14 +158,12 @@ export class SellerEarlyAccessComponent implements OnDestroy {
       website: this.website.value || undefined,
       legalStatus: this.legalStatus.value || undefined,
 
-      // noi – obligatorii
       contactName: this.contactName.value,
       city: this.city.value,
       country: this.country.value,
       currentChannels: this.currentChannels.value.length ? this.currentChannels.value : undefined,
       readiness: this.readiness.value,
 
-      // noi – opționale
       instagram: this.form.controls.instagram.value || undefined,
       tiktok: this.form.controls.tiktok.value || undefined,
       estOrdersPerMonth: this.form.controls.estOrdersPerMonth.value || undefined,
@@ -182,7 +172,6 @@ export class SellerEarlyAccessComponent implements OnDestroy {
       referral: this.form.controls.referral.value || undefined,
       marketingOptIn: this.form.controls.marketingOptIn.value,
 
-      // ✅ lipsă acum
       acceptTerms: this.acceptTerms.value,
     };
 
@@ -192,7 +181,12 @@ export class SellerEarlyAccessComponent implements OnDestroy {
         finalize(() => this.submitting = false)
       )
       .subscribe({
-        next: () => this.submitted = true,
+        next: () => {
+          this.submitted = true;
+          this.submittedChange.emit(true);         // 👈 pentru sticky bar
+          // focus/scroll pe cardul de succes (accesibilitate)
+          setTimeout(() => document.querySelector('.ea-card.success')?.scrollIntoView({ behavior: 'smooth' }), 0);
+        },
         error: (err) => {
           this.errorMsg = err?.error?.message || 'A apărut o eroare. Încearcă din nou.';
         }

@@ -15,6 +15,11 @@
           <span>Email *</span>
           <input type="email" formControlName="email" placeholder="ex: hello@brand.ro" autocomplete="email"/>
           <small class="err" *ngIf="email.touched && email.invalid" role="alert">Introdu un email valid.</small>
+          <!-- 👇 HINT upsert -->
+          <small class="hint" *ngIf="email.valid">
+            Dacă ai mai trimis o înscriere cu acest email, noile informații îți vor
+            <strong>actualiza automat</strong> înregistrarea existentă.
+          </small>
         </label>
 
         <label>
@@ -164,7 +169,7 @@
           <span>
             Sunt de acord cu
             <a href="assets/policies/termeni-si-conditii.pdf" target="_blank" rel="noopener noreferrer">Termenii</a> și
-            <a href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>.
+            <a href="assets/policies/politica-confidențialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>.
           </span>
 
           <button type="button" class="info-btn" (click)="openTerms()" aria-label="Vezi pe scurt Termenii & Politica">
@@ -192,7 +197,7 @@
   </div>
 
   <ng-template #thanksTpl>
-    <div class="ea-card success">
+    <div class="ea-card success" tabindex="-1">
       <h1>🎉 Mulțumim!</h1>
       <p>Te-ai înscris cu succes pe lista de așteptare pentru vânzători. Revenim pe email foarte curând.</p>
       <a class="btn" href="/">Înapoi la pagina principală</a>
@@ -213,8 +218,10 @@
           <li>Poți cere oricând ștergerea datelor (contact&#64;dorius.ro).</li>
           <li>Nu vindem și nu partajăm datele tale în scopuri de marketing ale terților.</li>
         </ul>
-        <p>Versiunea completă:  <a href="assets/policies/termeni-si-conditii.pdf" target="_blank" rel="noopener noreferrer">Termenii</a> și
-            <a href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>.
+        <p>Versiunea completă:
+          <a href="assets/policies/termeni-si-conditii.pdf" target="_blank" rel="noopener noreferrer">Termenii</a> și
+          <a href="assets/policies/politica-confidențialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>.
+        </p>
       </div>
     </div>
   </div>

@@ -13,8 +13,11 @@
   padding: 28px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
   border: 1px solid rgba(124, 58, 237, 0.08);
+  color: #2d3748;          /* ✅ text vizibil pe card (inclusiv la „Mulțumim”) */
 }
 .ea-card.success { text-align: center; }
+/* (opțional) stil explicit pe paragraful din succes */
+.ea-card.success p { color:#2d3748; }
 
 h1 { font-size: clamp(1.6rem, 3.5vw, 2rem); color: #4c1d95; margin: 0 0 8px; }
 .subtitle { color: #2d3748; margin: 0 0 18px; line-height: 1.55; }
@@ -52,7 +55,7 @@ input[type="checkbox"] {
   accent-color: #7c3aed;
 }
 
-/* === chips (Unde vinzi acum?) === */
+/* === chips === */
 .label-inline { display: inline-block; margin-bottom: 6px; font-weight: 600; color: #2d3748; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
@@ -63,7 +66,7 @@ input[type="checkbox"] {
 .chip:hover { transform: translateY(-1px); }
 .chip.active { background: #4c1d95; color: #fff; border-color: #4c1d95; }
 
-/* === detalii opționale (collapsible) === */
+/* === detalii opționale === */
 details.optional { margin-top: 8px; border-top: 1px dashed #e6e6ef; padding-top: 8px; }
 details.optional > summary {
   cursor: pointer; list-style: none; font-weight: 700; color: #4c1d95; margin: 6px 0 10px;
@@ -148,21 +151,13 @@ details.optional[open] > summary:after { transform: rotate(180deg); }
 .hint { color:#666; display:block; margin-top:6px; font-size:.875rem; }
 
 /* ========== EA (form) — MOBILE-ONLY PATCH, SAFE FOR DESKTOP ========== */
-
-/* prevenim orice depășire orizontală */
 .ea-wrapper { overflow-x: hidden; }
 
-/* telefoane <= 576px */
 @media (max-width: 576px) {
-
-  /* dacă sticky bar-ul e din componenta precedentă, rezervăm spațiu jos;
-     dacă nu există, e doar extra padding (nu strică nimic) */
   .ea-wrapper {
     --sticky-h: 56px;
     padding-bottom: calc(var(--sticky-h) + env(safe-area-inset-bottom) + 16px);
   }
-
-  /* cardul încape mereu în viewport, padding inclus (border-box) */
   .ea-card {
     box-sizing: border-box;
     width: 100%;
@@ -171,10 +166,8 @@ details.optional[open] > summary:after { transform: rotate(180deg); }
     padding: 16px 14px;
     border-radius: 12px;
     box-shadow: 0 8px 28px rgba(0,0,0,.12);
-    word-break: break-word;   /* linkuri/texte lungi nu mai împing layout-ul */
+    word-break: break-word;
   }
-
-  /* titluri & text, un pic mai compacte pe mobil */
   .ea-card h1 { 
     font-size: clamp(1.35rem, 5.2vw, 1.65rem); 
     margin: 0 0 6px; 
@@ -184,49 +177,35 @@ details.optional[open] > summary:after { transform: rotate(180deg); }
     margin: 0 0 14px; 
     line-height: 1.55; 
   }
-
-  /* grilele rămân pe 1 coloană, doar spații mai mici */
   .grid       { gap: 12px; }
   .opt-grid   { gap: 12px; }
   .full       { grid-column: 1 / -1; }
-
-  /* inputuri/select — target tactil bun + fără zoom iOS la focus */
-  input:not([type="checkbox"]):not([type="radio"]),
-  select {
+  input:not([type="checkbox"]):not([type="radio"]), select {
     min-height: 44px;
-    font-size: 16px; /* iOS: previne zoom-ul la focus */
+    font-size: 16px;
     max-width: 100%;
   }
-
-  /* chips pe rânduri multiple, fără overflow */
   .chips { flex-wrap: wrap; gap: 8px; }
   .chip  { padding: 7px 12px; font-size: .95rem; }
-
-  /* termeni — layout compact, fără să împingă butonul */
   .terms {
     grid-template-columns: 18px 1fr auto; 
     gap: 8px;
     align-items: center;
   }
   .terms .info-btn { width: 26px; height: 26px; }
-
-  /* buton submit full-width pe mobil */
   .btn {
     width: 100%;
     padding: 13px 16px;
     border-radius: 12px;
   }
-
   .footnote { font-size: .85rem; }
 }
 
-/* telefoane foarte înguste */
 @media (max-width: 360px) {
   .ea-card { padding: 12px; }
   .chip    { padding: 6px 10px; font-size: .9rem; }
   .modal-card { width: 94vw; box-sizing: border-box; }
 }
 
-/* modal — scroll doar în interior (nu „tragi” pagina din spate) */
 .modal { overscroll-behavior: contain; }
 .modal-card { box-sizing: border-box; }

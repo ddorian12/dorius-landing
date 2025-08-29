@@ -15,6 +15,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   formVisible = false;
 
+  hideStickyBar = false;
+  private formInView = false;
+  private formSubmitted = false;
+
   private ioHero?: IntersectionObserver;
   private ioForm?: IntersectionObserver;
 
@@ -23,7 +27,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.observeHero();
 
-    // ✅ Defer: evită NG0100 când deschizi direct #inscrieri
+    // ✅ deschidere directă #inscrieri
     if (window.location.hash === '#inscrieri') {
       setTimeout(() => {
         this.formVisible = true;
@@ -39,7 +43,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.ioForm?.disconnect();
   }
 
-  // -------- scroll comportament + hash
+  // -------- scroll + hash
   scrollToForm() {
     if (!this.formVisible) {
       this.formVisible = true;
@@ -73,10 +77,12 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.ioHero = new IntersectionObserver(
       (entries) => {
         const e = entries[0];
-        // doar curățăm hash-ul când revii pe hero (nu mai avem săgeată)
         this.ngZone.run(() => {
           if (e.isIntersecting && e.intersectionRatio >= 0.6) {
             this.clearHashReplace();
+            // când suntem înapoi pe hero și n-am trimis, sticky poate reapărea
+            this.formInView = false;
+            this.updateSticky();
           }
         });
       },
@@ -92,17 +98,31 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       (entries) => {
         const e = entries[0];
         this.ngZone.run(() => {
-          if (e.isIntersecting && e.intersectionRatio >= 0.6) {
+          this.formInView = !!e.isIntersecting && e.intersectionRatio >= 0.2;
+          if (this.formInView) {
             const url = new URL(window.location.href);
             if (url.hash !== '#inscrieri') {
               url.hash = 'inscrieri';
               history.replaceState(null, '', url.toString());
             }
           }
+          this.updateSticky();
         });
       },
-      { threshold: [0, 0.6, 1] }
+      { threshold: [0, 0.2, 0.6, 1] }
     );
     this.ioForm.observe(this.formSection.nativeElement);
+  }
+
+  // 👇 primește evenimentul de submit din copil
+  onFormSubmitted(val: boolean) {
+    this.formSubmitted = !!val;
+    this.updateSticky();
+  }
+
+  private updateSticky() {
+    // ascunde dacă formularul e în viewport SAU după submit (ecran „Mulțumim!”)
+    this.hideStickyBar = this.formInView || this.formSubmitted;
+    this.cdr.markForCheck();
   }
 }
