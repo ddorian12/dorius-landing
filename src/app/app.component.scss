@@ -195,3 +195,93 @@ button,
 }
 .btn-primary:hover{ filter:brightness(1.05); transform:translateY(-1px); box-shadow:0 12px 22px rgba(76,29,149,.3); }
 .btn-primary:active{ transform:translateY(0); box-shadow:0 8px 18px rgba(76,29,149,.25); }
+
+/* ========== MOBILE-ONLY PATCH (SAFE FOR DESKTOP) ========== */
+
+/* 0) Elimină scrollbar-ul orizontal fără să afecteze desktopul */
+:host { overflow-x: hidden; }
+
+/* 1) Previne orice depășire dată de transform/rotire pe mobil */
+@media (max-width: 576px) {
+  /* Oprește snap-ul doar pe mobil ca să nu te "arunce" pe secțiuni */
+  :host { scroll-snap-type: none; }
+  .coming-soon-container,
+  .form-section { scroll-snap-align: none; }
+
+  /* Rezervă spațiu pentru sticky-bar + safe-area iOS */
+  :host {
+    --sticky-h: 56px;
+    padding-bottom: calc(var(--sticky-h) + env(safe-area-inset-bottom));
+  }
+
+  /* Cardul: încadrare sigură în ecran, fără depășiri */
+  .coming-soon-container {
+    padding: 14px 12px;
+  }
+  .content-wrapper {
+    /* întotdeauna încape în viewport, padding inclus */
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  /* Săgeata: stă deasupra barei sticky pe mobil */
+  .scroll-cta {
+    bottom: calc(var(--sticky-h) + 12px + env(safe-area-inset-bottom));
+  }
+
+  /* Bara sticky: nu forțează lățimea peste viewport */
+  .sticky-bar {
+    left: 0; right: 0; width: auto;     /* evită 100vw */
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+    font-size: .95rem;
+  }
+
+  /* Socials: permit wrap ca să nu "iasă" din card */
+  .socials { flex-wrap: wrap; row-gap: 10px; }
+  .social-icon { width: 44px; height: 44px; }
+
+  /* Mică relaxare a animațiilor pe mobil */
+  .layer-1 { animation-duration: 26s; opacity: .26; }
+  .layer-2 { animation-duration: 36s; opacity: .18; transform: scale(1.12); }
+
+  /* Titluri & text mai compacte pe ecrane înguste */
+  .title { margin-bottom: .75rem; }
+  .subtitle { margin-bottom: 1rem; }
+
+  /* CTA plin pe mobil (dar nu afectează desktop) */
+  .btn-primary { width: 100%; max-width: 480px; }
+}
+
+/* 2) Telefoane foarte înguste */
+@media (max-width: 360px) {
+  .content-wrapper { padding: 12px; }
+  .icon { width: 18px; height: 18px; }
+}
+
+/* 3) Accesibilitate & "reduced motion" (nu afectează layout) */
+@media (prefers-reduced-motion: reduce) {
+  .layer-1, .layer-2, .logo, .scroll-arrow {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* — tiny mobile safeguards — */
+@media (max-width: 576px) {
+  /* uneori umbre/transform pot crea 1px overflow pe anumite device-uri */
+  .content-wrapper { overflow-wrap: anywhere; }
+
+  /* dacă ai văzut vreun artefact, ajută să „taie” surplusul din card */
+  .content-wrapper { contain: layout paint; }
+}
+
+/* iOS Safari – evită micile „săltări” la apariția safe area / tastatură */
+@supports (padding: max(0px)) {
+  .sticky-bar {
+    padding-bottom: max(.5rem, env(safe-area-inset-bottom));
+  }
+}
