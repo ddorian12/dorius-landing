@@ -7,14 +7,13 @@ import { SellerEarlyAccessComponent } from './seller-early-access/seller-early-a
   standalone: true,
   imports: [CommonModule, SellerEarlyAccessComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'] // <- styleUrls (plural) e sigur pe toate versiunile
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
   @ViewChild('heroSection') heroSection!: ElementRef<HTMLElement>;
   @ViewChild('formSection') formSection!: ElementRef<HTMLElement>;
 
   formVisible = false;
-  arrowVisible = true;
 
   private ioHero?: IntersectionObserver;
   private ioForm?: IntersectionObserver;
@@ -28,7 +27,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     if (window.location.hash === '#inscrieri') {
       setTimeout(() => {
         this.formVisible = true;
-        this.cdr.detectChanges();            // compilează view-ul creat de *ngIf
+        this.cdr.detectChanges();
         this.observeForm();
         this.formSection?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 0);
@@ -45,7 +44,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     if (!this.formVisible) {
       this.formVisible = true;
       setTimeout(() => {
-        this.cdr.detectChanges();            // asigură-te că #formSection există
+        this.cdr.detectChanges();
         this.observeForm();
         this.formSection?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         this.pushInscrieriHash();
@@ -74,13 +73,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.ioHero = new IntersectionObserver(
       (entries) => {
         const e = entries[0];
-        // rulăm în zonă ca să prindă CD, dar într-o tick separat
+        // doar curățăm hash-ul când revii pe hero (nu mai avem săgeată)
         this.ngZone.run(() => {
           if (e.isIntersecting && e.intersectionRatio >= 0.6) {
-            this.arrowVisible = true;
             this.clearHashReplace();
-          } else {
-            this.arrowVisible = false;
           }
         });
       },

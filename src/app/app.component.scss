@@ -57,7 +57,7 @@
 .title{font-size:clamp(1.8rem,5vw,3rem); font-weight:700; color:#4c1d95; margin-bottom:1rem;}
 .subtitle{font-size:clamp(1rem,3vw,1.25rem); color:#2d3748; margin-bottom:1.5rem; line-height:1.6;}
 
-/* (poți păstra stilurile de countdown, deși nu mai sunt folosite) */
+/* (păstrate pentru eventual countdown viitor) */
 .countdown-wrapper{margin-bottom:1.5rem;}
 .countdown{display:flex; justify-content:center; gap:clamp(.8rem,2vw,1.5rem); flex-wrap:wrap;}
 .time-block{
@@ -96,25 +96,6 @@
   animation:slideUp 1s ease;
 }
 
-/* ⬇️ Săgeata – poziționăm CONTAINERUL */
-.scroll-cta{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:calc(86px + env(safe-area-inset-bottom));
-  z-index:1000;
-  pointer-events:none;
-}
-.scroll-arrow{
-  pointer-events:auto;
-  width:46px; height:46px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  color:#fff; background:#4c1d95; border:0;
-  box-shadow:0 8px 20px rgba(76,29,149,.35);
-  cursor:pointer; animation:arrow-bounce 1.6s infinite;
-}
-.scroll-arrow:hover{ filter:brightness(1.06); }
-
 /* --- FORM SECTION (full viewport) --- */
 .form-section{
   min-height:100svh;
@@ -131,7 +112,6 @@
 }
 
 /* animații */
-@keyframes arrow-bounce{0%,100%{transform:translate(0,0)}50%{transform:translate(0,6px)}}
 @keyframes slideIn{from{opacity:0; transform:translateY(30px)} to{opacity:1; transform:translateY(0)}}
 @keyframes parallax{0%{transform:translateY(0)} 100%{transform:translateY(-100px)}}
 @keyframes slideUp{from{transform:translateY(100%); opacity:0} to{transform:translateY(0); opacity:1}}
@@ -151,12 +131,11 @@
 .pre-countdown{margin-bottom:1rem; color:#4c1d95;}
 .pre-countdown .status-line{font-size:clamp(1rem,2.5vw,1.15rem); font-weight:500; margin:.25rem 0;}
 
-/* asigură cursor “mână” pe toate elementele interactive */
+/* asigură cursor “mână” pe elemente interactive */
 a[href],
 button,
 [role="button"],
 .social-icon,
-.scroll-arrow,
 .terms a{
   cursor:pointer !important;
 }
@@ -215,11 +194,8 @@ button,
   }
 
   /* Cardul: încadrare sigură în ecran, fără depășiri */
-  .coming-soon-container {
-    padding: 14px 12px;
-  }
+  .coming-soon-container { padding: 14px 12px; }
   .content-wrapper {
-    /* întotdeauna încape în viewport, padding inclus */
     box-sizing: border-box;
     width: 100%;
     max-width: 800px;
@@ -228,14 +204,9 @@ button,
     border-radius: 12px;
   }
 
-  /* Săgeata: stă deasupra barei sticky pe mobil */
-  .scroll-cta {
-    bottom: calc(var(--sticky-h) + 20px + env(safe-area-inset-bottom)); /* era +12px */
-  }
-
   /* Bara sticky: nu forțează lățimea peste viewport */
   .sticky-bar {
-    left: 0; right: 0; width: auto;     /* evită 100vw */
+    left: 0; right: 0; width: auto;
     padding-bottom: calc(8px + env(safe-area-inset-bottom));
     font-size: .95rem;
   }
@@ -264,7 +235,7 @@ button,
 
 /* 3) Accesibilitate & "reduced motion" (nu afectează layout) */
 @media (prefers-reduced-motion: reduce) {
-  .layer-1, .layer-2, .logo, .scroll-arrow {
+  .layer-1, .layer-2, .logo {
     animation: none !important;
     transition: none !important;
   }
@@ -272,16 +243,129 @@ button,
 
 /* — tiny mobile safeguards — */
 @media (max-width: 576px) {
-  /* uneori umbre/transform pot crea 1px overflow pe anumite device-uri */
   .content-wrapper { overflow-wrap: anywhere; }
-
-  /* dacă ai văzut vreun artefact, ajută să „taie” surplusul din card */
   .content-wrapper { contain: layout paint; }
 }
 
 /* iOS Safari – evită micile „săltări” la apariția safe area / tastatură */
 @supports (padding: max(0px)) {
-  .sticky-bar {
-    padding-bottom: max(.5rem, env(safe-area-inset-bottom));
+  .sticky-bar { padding-bottom: max(.5rem, env(safe-area-inset-bottom)); }
+}
+
+/* poziționare sub email */
+/* poziționare sub email */
+.scroll-hero {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* Scroll down – fix: NU mai rotim containerul; rotim doar SVG-urile și animăm pe Y */
+.scroll-down-btn {
+  display: block;
+  position: relative;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;             /* ascunde iconul 2 până la hover */
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  outline: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* inelele */
+.scroll-down-btn::before,
+.scroll-down-btn::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  inset: 7px;
+}
+
+.scroll-down-btn::before {
+  border: 4px solid #e9d8fd;
+  transition:
+    opacity .4s cubic-bezier(.77,0,.175,1) 80ms,
+    transform .5s cubic-bezier(.455,.03,.515,.955) 80ms;
+}
+
+.scroll-down-btn::after {
+  border: 4px solid #7c3aed;
+  transform: scale(1.3);
+  opacity: 0;
+  transition:
+    opacity .4s cubic-bezier(.165,.84,.44,1),
+    transform .5s cubic-bezier(.25,.46,.45,.94);
+}
+
+.scroll-down-btn:hover::before,
+.scroll-down-btn:focus-visible::before {
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+.scroll-down-btn:hover::after,
+.scroll-down-btn:focus-visible::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* cutia cu cele 2 săgeți – acum pe coloană, nu pe rând */
+.scroll-down-btn .button-box {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform .4s;
+}
+
+/* fiecare săgeată */
+.scroll-down-btn .button-elem {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 18px; /* 18px pe toate laturile */
+}
+
+/* rotim efectiv iconul spre JOS; nu mai folosim rotate pe container */
+.scroll-down-btn .button-elem svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  transform: rotate(90deg);           /* <- devine down arrow */
+  transform-origin: 50% 50%;
+  fill: #4c1d95;
+}
+
+/* la hover, glisăm box-ul în sus cu exact 56px (înălțimea butonului) */
+.scroll-down-btn:hover .button-box,
+.scroll-down-btn:focus-visible .button-box {
+  transform: translateY(-56px);
+}
+
+/* accesibilitate */
+.scroll-down-btn:focus-visible {
+  outline: 2px solid #7c3aed33;
+  outline-offset: 4px;
+}
+
+/* mobil */
+@media (max-width: 576px) {
+  /* ai deja --sticky-h: 56px pe :host în mobil */
+  .content-wrapper { padding-bottom: calc(var(--sticky-h) + 48px); }
+  .scroll-hero { margin-top: 12px; }        /* un pic de spațiu peste săgeată */
+  .scroll-down-btn { width: 56px; height: 56px; }  /* țintă mai mare pe touch */
+}
+
+@media (hover: none) {
+  .scroll-down-btn:hover .button-box,
+  .scroll-down-btn:focus .button-box,
+  .scroll-down-btn:focus-visible .button-box {
+    transform: none !important;
   }
 }
+
+/* Siguranță: dacă tot e aproape de bară, un mic offset vizual */
+.scroll-hero { margin-bottom: 6px; }
