@@ -1,16 +1,33 @@
-<div class="coming-soon-container">
+<div class="coming-soon-container" #heroSection>
   <div class="parallax-background">
     <div class="layer layer-1"></div>
     <div class="layer layer-2"></div>
   </div>
+
   <div class="content-wrapper">
     <img src="assets/logo2.png" alt="Dorius Logo" class="logo" />
 
-    <h1 class="title">Dorius.ro se lansează în curând</h1>
+    <h1 class="title">Dorius.ro — în curând</h1>
     <p class="subtitle">
        Produse digitale și fizice de calitate. Creat cu pasiune, livrat cu stil.
     </p>
 
+    <div class="announcement">
+      <span class="badge">Înscrieri deschise</span>
+      <p class="status-line">🛠️ Site-ul este în lucru.</p>
+      <p class="status-line">
+        🚀 Curând lansăm oficial aplicația. Între timp, <strong>înscrierile pentru selleri sunt deschise</strong>.
+      </p>
+      <button
+        class="btn-primary"
+        (click)="scrollToForm()"
+        aria-label="Înscrie-te ca vânzător"
+      >
+        Înscrie-te ca vânzător
+      </button>
+    </div>
+
+    <!-- Countdown scos (păstrat comentat, dacă vei dori să-l refolosești)
     <div class="pre-countdown">
       <p class="status-line">🛠️ Site-ul este în lucru.</p>
       <p class="status-line">📦 Estimăm lansarea în aproximativ:</p>
@@ -36,6 +53,7 @@
         </div>
       </div>
     </div>
+    -->
 
     <div class="socials">
       <a href="https://www.facebook.com/share/19MBaqzSLR/" target="_blank" aria-label="Facebook" class="social-icon">
@@ -53,8 +71,27 @@
     </div>
 
     <div class="sticky-bar">
-      <span>Revenim în curând cu lansarea oficială!</span>
+      <span>Înscrierile pentru selleri sunt deschise — completează formularul de mai jos.</span>
     </div>
+
     <p class="contact">contact&#64;dorius.ro</p>
   </div>
+
+  <div class="scroll-cta" *ngIf="arrowVisible">
+    <div class="scroll-arrow"
+      (click)="scrollToForm()"
+      (keydown.enter)="scrollToForm()"
+      (keydown.space)="scrollToForm()"
+      role="button" tabindex="0" aria-label="Mergi la formular">
+        <svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 5v14m0 0l-7-7m7 7l7-7"
+                stroke="currentColor" stroke-width="2" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+  </div>
+</div>
+
+<div id="formSection" #formSection *ngIf="formVisible" class="form-section">
+  <app-seller-early-access></app-seller-early-access>
 </div>

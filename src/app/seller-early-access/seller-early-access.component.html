@@ -1,0 +1,221 @@
+<section class="ea-wrapper">
+  <div class="ea-card" *ngIf="!submitted; else thanksTpl">
+    <h1>Înscrieri vânzători • Dorius.ro</h1>
+    <p class="subtitle">
+      Așa cum am promis, <strong>în august deschidem înscrierile</strong> pentru viitorii selleri.
+      Completează formularul și te anunțăm imediat ce onboarding-ul complet este disponibil.
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <input formControlName="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <div class="grid">
+        <!-- OBLIGATORII -->
+        <label>
+          <span>Email *</span>
+          <input type="email" formControlName="email" placeholder="ex: hello@brand.ro" autocomplete="email"/>
+          <small class="err" *ngIf="email.touched && email.invalid" role="alert">Introdu un email valid.</small>
+        </label>
+
+        <label>
+          <span>Nume brand / public *</span>
+          <input type="text" formControlName="brandName" placeholder="ex: DoriPrints" maxlength="40"/>
+          <small class="err" *ngIf="brandName.touched && brandName.invalid" role="alert">
+            Numele este obligatoriu (max. 40 caractere).
+          </small>
+        </label>
+
+        <label>
+          <span>Persoană de contact *</span>
+          <input type="text" formControlName="contactName" placeholder="ex: Ana Popescu" autocomplete="name"/>
+          <small class="err" *ngIf="contactName.touched && contactName.invalid" role="alert">
+            Completează persoana de contact.
+          </small>
+        </label>
+
+        <label>
+          <span>Oraș *</span>
+          <input type="text" formControlName="city" placeholder="ex: Cluj-Napoca" autocomplete="address-level2"/>
+          <small class="err" *ngIf="city.touched && city.invalid" role="alert">Completează orașul.</small>
+        </label>
+
+        <label>
+          <span>Țară *</span>
+          <select formControlName="country" autocomplete="country">
+            <option *ngFor="let c of countries" [value]="c.value">{{ c.label }}</option>
+          </select>
+          <small class="err" *ngIf="country.touched && country.invalid" role="alert">Selectează țara.</small>
+        </label>
+
+        <label>
+          <span>Tip de produse *</span>
+          <select formControlName="productScope">
+            <option *ngFor="let o of productScopeOptions" [value]="o.value">{{ o.label }}</option>
+          </select>
+          <small class="err" *ngIf="productScope.touched && productScope.invalid" role="alert">
+            Selectează o opțiune.
+          </small>
+        </label>
+
+        <label>
+          <span>Ce vinzi (scurt)</span>
+          <input type="text" formControlName="productTypes" placeholder="ex: ebooks, planificatoare, stickere" maxlength="120"/>
+        </label>
+
+        <label>
+          <span>Website / Link portofoliu</span>
+          <input type="url" formControlName="website" placeholder="ex: https://linktr.ee/brand" maxlength="200" autocomplete="url"/>
+        </label>
+
+        <label>
+          <span>Statut legal *</span>
+          <select formControlName="legalStatus">
+            <option value="">— selectează —</option>
+            <option *ngFor="let s of legalStatusOptions" [value]="s.value">{{ s.label }}</option>
+          </select>
+
+          <small class="err" *ngIf="legalStatus.touched && legalStatus.invalid" role="alert">
+            Selectează statutul legal.
+          </small>
+
+          <small *ngIf="legalStatus.value === 'none'" class="hint">
+            Poți trimite înscrierea acum. Pentru a primi plăți la onboarding va fi necesar PFA/II/IF sau SRL/SA.
+          </small>
+        </label>
+
+        <div class="full">
+          <span class="label-inline">Unde vinzi acum?</span>
+          <div class="chips">
+            <button type="button" class="chip" [class.active]="hasChannel('Website')"   (click)="toggleChannel('Website')">Website propriu</button>
+            <button type="button" class="chip" [class.active]="hasChannel('Instagram')" (click)="toggleChannel('Instagram')">Instagram</button>
+            <button type="button" class="chip" [class.active]="hasChannel('TikTok')"    (click)="toggleChannel('TikTok')">TikTok</button>
+            <button type="button" class="chip" [class.active]="hasChannel('Etsy')"      (click)="toggleChannel('Etsy')">Etsy</button>
+            <button type="button" class="chip" [class.active]="hasChannel('eMAG')"      (click)="toggleChannel('eMAG')">eMAG</button>
+            <button type="button" class="chip" [class.active]="hasChannel('Alt marketplace')" (click)="toggleChannel('Alt marketplace')">Alt marketplace</button>
+          </div>
+        </div>
+
+        <label>
+          <span>Disponibilitate *</span>
+          <select formControlName="readiness">
+            <option value="now">Vreau să încep în ≤30 zile</option>
+            <option value="later">Mă interesează, dar mai târziu</option>
+          </select>
+          <small class="err" *ngIf="readiness.touched && readiness.invalid" role="alert">
+            Spune-ne disponibilitatea.
+          </small>
+        </label>
+      </div>
+
+      <!-- DETALII OPȚIONALE (collapsible) -->
+      <details class="optional">
+        <summary>Detalii opționale (≈1 min) – ne ajuți să te aprobăm mai repede</summary>
+        <div class="grid opt-grid">
+          <label>
+            <span>Instagram</span>
+            <input type="text" formControlName="instagram" placeholder="URL sau @handle" maxlength="120"/>
+          </label>
+
+          <label>
+            <span>TikTok</span>
+            <input type="text" formControlName="tiktok" placeholder="URL sau @handle" maxlength="120"/>
+          </label>
+
+          <label>
+            <span>Volum estimat/lună</span>
+            <select formControlName="estOrdersPerMonth">
+              <option value="">— alege —</option>
+              <option *ngFor="let r of estOrdersOptions" [value]="r">{{ r }}</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Fulfillment</span>
+            <select formControlName="fulfillment">
+              <option value="">— selectează —</option>
+              <option *ngFor="let f of fulfillmentOptions" [value]="f.value">{{ f.label }}</option>
+            </select>
+          </label>
+
+          <label class="checkline">
+            <input type="checkbox" formControlName="hasIPRights"/>
+            <span>Declar că dețin drepturile/licențele pentru produsele listate</span>
+          </label>
+
+          <label>
+            <span>Cum ai aflat de noi?</span>
+            <select formControlName="referral">
+              <option value="">— selectează —</option>
+              <option *ngFor="let r of referralOptions" [value]="r">{{ r }}</option>
+            </select>
+          </label>
+
+          <label class="checkline">
+            <input type="checkbox" formControlName="marketingOptIn"/>
+            <span>Vreau să primesc noutăți & update-uri pentru selleri</span>
+          </label>
+        </div>
+      </details>
+
+      <!-- Termeni + eroare pe propria linie ca să NU împingă butonul -->
+      <div class="terms-row">
+        <label class="terms">
+          <input type="checkbox" formControlName="acceptTerms" />
+          <span>
+            Sunt de acord cu
+            <a href="assets/policies/termeni-si-conditii.pdf" target="_blank" rel="noopener noreferrer">Termenii</a> și
+            <a href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>.
+          </span>
+
+          <button type="button" class="info-btn" (click)="openTerms()" aria-label="Vezi pe scurt Termenii & Politica">
+            <svg viewBox="0 0 24 24" class="info-ic" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="8"></line>
+              <line x1="12" y1="12" x2="12" y2="16"></line>
+            </svg>
+          </button>
+        </label>
+
+        <small class="err terms-err" *ngIf="acceptTerms.touched && acceptTerms.invalid" role="alert">
+          Trebuie să accepți termenii.
+        </small>
+      </div>
+
+      <button class="btn" type="submit" [disabled]="submitting || form.invalid" [attr.aria-busy]="submitting">
+        <span *ngIf="!submitting">Înscrie-mă</span>
+        <span *ngIf="submitting">Se trimite…</span>
+      </button>
+
+      <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+      <p class="footnote">Nu trimitem spam. Poți solicita oricând ștergerea datelor.</p>
+    </form>
+  </div>
+
+  <ng-template #thanksTpl>
+    <div class="ea-card success">
+      <h1>🎉 Mulțumim!</h1>
+      <p>Te-ai înscris cu succes pe lista de așteptare pentru vânzători. Revenim pe email foarte curând.</p>
+      <a class="btn" href="/">Înapoi la pagina principală</a>
+    </div>
+  </ng-template>
+
+  <!-- Modal Termeni -->
+  <div class="modal-backdrop" *ngIf="showTerms" (click)="closeTerms()"></div>
+  <div class="modal" *ngIf="showTerms" role="dialog" aria-modal="true" aria-labelledby="termsTitle" (keydown.escape)="closeTerms()">
+    <div class="modal-card">
+      <header class="modal-head">
+        <h2 id="termsTitle">Termeni & Politica (pe scurt)</h2>
+        <button type="button" class="modal-close" (click)="closeTerms()" aria-label="Închide">×</button>
+      </header>
+      <div class="modal-body">
+        <ul>
+          <li>Datele trimise sunt folosite pentru contactarea ta la deschiderea onboarding-ului.</li>
+          <li>Poți cere oricând ștergerea datelor (contact&#64;dorius.ro).</li>
+          <li>Nu vindem și nu partajăm datele tale în scopuri de marketing ale terților.</li>
+        </ul>
+        <p>Versiunea completă:  <a href="assets/policies/termeni-si-conditii.pdf" target="_blank" rel="noopener noreferrer">Termenii</a> și
+            <a href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>.
+      </div>
+    </div>
+  </div>
+</section>
