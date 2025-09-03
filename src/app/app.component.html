@@ -7,9 +7,9 @@
   <div class="content-wrapper">
     <img src="assets/logo2.png" alt="Dorius Logo" class="logo" />
 
-    <h1 class="title">Dorius.ro — în curând</h1>
+    <h1 class="title">Înscrieri deschise pentru selleri – Etapa 1</h1>
     <p class="subtitle">
-       Produse digitale și fizice de calitate. Creat cu pasiune, livrat cu stil.
+      Produse digitale și fizice de calitate. Creat cu pasiune, livrat cu stil.
     </p>
 
     <div class="announcement">
@@ -21,14 +21,41 @@
       <p class="status-line">
         🚀 Curând lansăm oficial aplicația. Între timp, <strong>te poți alătura printre primii vânzători pe Dorius.</strong>
       </p>
-      <button
-        class="btn-primary"
-        (click)="scrollToForm()"
-        aria-label="Înscrie-te ca vânzător"
-      >
+      <button class="btn-primary" (click)="scrollToForm()" aria-label="Înscrie-te ca vânzător">
         Înscrie-te ca vânzător
       </button>
     </div>
+
+    <ul class="benefits-grid" aria-label="Beneficii pentru selleri">
+      <li class="benefit">
+        <span class="b-ic" aria-hidden="true">⚡</span>
+        <span class="b-title">Vânzări rapide</span>
+        <span class="b-sub">Listing simplu, timp minim până la primele comenzi.</span>
+      </li>
+
+      <li class="benefit">
+        <span class="b-ic" aria-hidden="true">🔒</span>
+        <span class="b-title">Plăți sigure cu Stripe</span>
+        <span class="b-sub">Onboarding transparent, încasări protejate.</span>
+      </li>
+
+      <li class="benefit is-promo">
+        <span class="b-ic" aria-hidden="true">💜</span>
+        <span class="b-title">
+          0% comision în prima lună
+          <span class="b-badge">Etapa 1</span>
+        </span>
+        <span class="b-sub">
+          Start fără costuri de vânzare.
+          <a href="assets/policies/comisioane-dorius.pdf" target="_blank" rel="noopener noreferrer">Detalii</a>
+        </span>
+      </li>
+    </ul>
+
+    <p class="benefits-note">
+      *Se aplică termeni & condiții. Vezi
+      <a href="assets/policies/comisioane-dorius.pdf" target="_blank" rel="noopener noreferrer">Comisioane</a>.
+    </p>
 
     <div class="socials">
       <a href="https://www.facebook.com/share/19MBaqzSLR/" target="_blank" aria-label="Facebook" class="social-icon">
@@ -68,13 +95,10 @@
   </div>
 </div>
 
-<!-- Sticky bar: vizibilă doar când NU suntem pe formular și NU am trimis -->
 <div class="sticky-bar" *ngIf="!hideStickyBar">
   <span>Completează formularul pentru a te înscrie ca vânzător.</span>
 </div>
 
 <div id="formSection" #formSection *ngIf="formVisible" class="form-section">
-  <app-seller-early-access
-    (submittedChange)="onFormSubmitted($event)">
-  </app-seller-early-access>
+  <app-seller-early-access (submittedChange)="onFormSubmitted($event)"></app-seller-early-access>
 </div>

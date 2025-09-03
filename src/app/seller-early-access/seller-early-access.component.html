@@ -6,6 +6,18 @@
       Completează formularul și te anunțăm imediat ce onboarding-ul complet este disponibil.
     </p>
 
+    <div class="doc-links" aria-label="Documente utile">
+      <a class="doc-chip" href="assets/policies/termeni-si-conditii.pdf" target="_blank" rel="noopener noreferrer" aria-label="Termeni și condiții (PDF)">
+        <span class="ic">📄</span> Termeni
+      </a>
+      <a class="doc-chip" href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer" aria-label="Politica de confidențialitate (PDF)">
+        <span class="ic">🔒</span> Confidențialitate
+      </a>
+      <button type="button" class="doc-chip" (click)="openFees()" aria-label="Comisioane (previzualizare PDF)">
+        <span class="ic">💸</span> Comisioane
+      </button>
+    </div>
+
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
       <input formControlName="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
@@ -168,7 +180,8 @@
           <span>
             Sunt de acord cu
             <a href="assets/policies/termeni-si-conditii.pdf" target="_blank" rel="noopener noreferrer">Termenii</a> și
-            <a href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>.
+            <a href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>,
+            precum și cu <a href="assets/policies/comisioane-dorius.pdf" target="_blank" rel="noopener noreferrer">Comisioanele</a>.
           </span>
 
           <button type="button" class="info-btn" (click)="openTerms()" aria-label="Vezi pe scurt Termenii & Politica">
@@ -219,8 +232,30 @@
         </ul>
         <p>Versiunea completă:
           <a href="assets/policies/termeni-si-conditii.pdf" target="_blank" rel="noopener noreferrer">Termenii</a> și
-          <a href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>.
+          <a href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>,
+          precum și <a href="assets/policies/comisioane-dorius.pdf" target="_blank" rel="noopener noreferrer">Comisioane</a>.
         </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Backdrop modal Comisioane -->
+  <div class="modal-backdrop" *ngIf="showFees" (click)="closeFees()"></div>
+
+  <!-- Modal Comisioane (previzualizare PDF) -->
+  <div class="modal" *ngIf="showFees" role="dialog" aria-modal="true" aria-labelledby="feesTitle" (keydown.escape)="closeFees()">
+    <div class="modal-card wide">
+      <header class="modal-head">
+        <h2 id="feesTitle">Comisioane Dorius.ro</h2>
+        <a class="btn-link" href="assets/policies/comisioane-dorius.pdf" target="_blank" rel="noopener noreferrer">Deschide în fereastră nouă</a>
+        <button type="button" class="modal-close" (click)="closeFees()" aria-label="Închide">×</button>
+      </header>
+      <div class="modal-body pdf-body">
+        <iframe
+          class="pdf-frame"
+          src="assets/policies/comisioane-dorius.pdf#view=FitH"
+          title="Comisioane Dorius.ro (PDF)"
+        ></iframe>
       </div>
     </div>
   </div>

@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
 :host{
+  --sticky-h: 56px; /* desktop; pe mobil e suprascris */
   display:block;
   min-height:100vh;
   overflow:auto;
@@ -8,12 +9,14 @@
   color:#ffffff;
   background:linear-gradient(135deg,#4c1d95 0%,#7c3aed 100%);
   scroll-snap-type:y mandatory;
+  padding-bottom: var(--sticky-h);
 }
 
 /* --- HERO --- */
 .coming-soon-container{
   position:relative;
-  height:100svh;
+  min-height: calc(100svh - var(--sticky-h));
+  height:auto;
   display:grid;
   place-items:center;
   padding:2rem 1rem;
@@ -21,17 +24,12 @@
   scroll-snap-align:start;
 }
 
-/* Parallax sub conținut + nu interceptează mouse-ul */
-.parallax-background{
-  position:absolute; inset:0; overflow:hidden;
-  z-index:0;
-  pointer-events:none;
-}
+/* Parallax */
+.parallax-background{ position:absolute; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
 .layer{
   position:absolute; width:100%; height:100%;
   background:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%23ffffff" fill-opacity="0.1" d="M0,192L48,176C96,160,192,128,288,149.3C384,171,480,245,576,256C672,267,768,213,864,181.3C960,149,1056,139,1152,149.3C1248,160,1344,192,1392,208L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E') no-repeat center bottom;
-  background-size:cover;
-  pointer-events:none;
+  background-size:cover; pointer-events:none;
 }
 .layer-1{animation:parallax 20s linear infinite; opacity:.3;}
 .layer-2{animation:parallax 30s linear infinite; opacity:.2; transform:scale(1.2);}
@@ -39,7 +37,10 @@
 /* Card */
 .content-wrapper{
   position:relative;
-  width:min(800px,90%);
+  /* ✅ gutter fix: spațiu minim 12px pe stânga/dreapta pe ecrane înguste */
+  width: min(800px, calc(100% - 24px));
+  box-sizing: border-box;
+
   margin:0 auto;
   text-align:center;
   background:rgba(255,255,255,.95);
@@ -49,6 +50,9 @@
   animation:slideIn 1.2s cubic-bezier(.4,0,.2,1);
   z-index:1;
   color:#2d3748;
+
+  margin-bottom: calc(var(--sticky-h) + 8px);
+  padding-bottom: 18px;
 }
 
 .logo{width:clamp(120px,25vw,180px); transition:transform .4s,filter .4s; animation:float 3s ease-in-out infinite;}
@@ -96,7 +100,7 @@
   animation:slideUp 1s ease;
 }
 
-/* --- FORM SECTION (full viewport) --- */
+/* --- FORM SECTION --- */
 .form-section{
   min-height:100svh;
   scroll-snap-align:start;
@@ -119,26 +123,18 @@
 
 /* mobile tweaks */
 @media (max-width:576px){
-  .coming-soon-container{padding:1rem .5rem;}
-  .content-wrapper{padding:1.5rem; border-radius:12px;}
+  /* ✅ padding simetric pe container */
+  .coming-soon-container{ padding: 14px 12px; }
+
+  .content-wrapper{ padding:1.5rem; border-radius:12px; }
   .subtitle{margin-bottom:1rem;}
   .countdown{gap:.8rem;}
   .time-block{min-width:50px; padding:.5rem;}
   .icon{width:18px; height:18px;}
 }
 
-/* pre-countdown mov */
-.pre-countdown{margin-bottom:1rem; color:#4c1d95;}
-.pre-countdown .status-line{font-size:clamp(1rem,2.5vw,1.15rem); font-weight:500; margin:.25rem 0;}
-
-/* asigură cursor “mână” pe elemente interactive */
-a[href],
-button,
-[role="button"],
-.social-icon,
-.terms a{
-  cursor:pointer !important;
-}
+/* text/accessibility + cursors */
+a[href],button,[role="button"],.social-icon,.terms a{ cursor:pointer !important; }
 
 /* NOU: anunț + CTA */
 .announcement{
@@ -150,331 +146,201 @@ button,
 }
 .badge{
   display:inline-block;
-  background:#e9d8fd;
-  color:#4c1d95;
-  border:1px solid #d6bcfa;
-  padding:.35rem .6rem;
-  border-radius:999px;
-  font-size:.8rem;
-  font-weight:700;
-  letter-spacing:.02em;
+  background:#e9d8fd; color:#4c1d95; border:1px solid #d6bcfa;
+  padding:.35rem .6rem; border-radius:999px; font-size:.8rem; font-weight:700; letter-spacing:.02em;
 }
 .btn-primary{
-  display:inline-block;
-  border:0;
-  border-radius:10px;
-  padding:.75rem 1.1rem;
-  font-weight:700;
-  font-size:1rem;
-  background:#4c1d95;
-  color:#fff;
-  box-shadow:0 10px 20px rgba(76,29,149,.25);
-  cursor:pointer;
+  display:inline-block; border:0; border-radius:10px; padding:.75rem 1.1rem;
+  font-weight:700; font-size:1rem; background:#4c1d95; color:#fff;
+  box-shadow:0 10px 20px rgba(76,29,149,.25); cursor:pointer;
   transition:transform .15s ease, box-shadow .2s ease, filter .2s ease;
 }
 .btn-primary:hover{ filter:brightness(1.05); transform:translateY(-1px); box-shadow:0 12px 22px rgba(76,29,149,.3); }
 .btn-primary:active{ transform:translateY(0); box-shadow:0 8px 18px rgba(76,29,149,.25); }
 
 /* ========== MOBILE-ONLY PATCH (SAFE FOR DESKTOP) ========== */
-
-/* 0) Elimină scrollbar-ul orizontal fără să afecteze desktopul */
 :host { overflow-x: hidden; }
 
-/* 1) Previne orice depășire dată de transform/rotire pe mobil */
 @media (max-width: 576px) {
-  /* Oprește snap-ul doar pe mobil ca să nu te "arunce" pe secțiuni */
-  :host { scroll-snap-type: none; }
-  .coming-soon-container,
-  .form-section { scroll-snap-align: none; }
-
-  /* Rezervă spațiu pentru sticky-bar + safe-area iOS */
-  :host {
-    --sticky-h: 56px;
-    padding-bottom: calc(var(--sticky-h) + env(safe-area-inset-bottom));
-  }
-
-  /* Cardul: încadrare sigură în ecran, fără depășiri */
-  .coming-soon-container { padding: 14px 12px; }
-  .content-wrapper {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 16px;
-    border-radius: 12px;
-  }
-
-  /* Bara sticky: nu forțează lățimea peste viewport */
-  .sticky-bar {
-    left: 0; right: 0; width: auto;
-    padding-bottom: calc(8px + env(safe-area-inset-bottom));
-    font-size: .95rem;
-  }
-
-  /* Socials: permit wrap ca să nu "iasă" din card */
+  :host { scroll-snap-type: none; --sticky-h: 72px; padding-bottom: calc(var(--sticky-h) + env(safe-area-inset-bottom)); }
+  .coming-soon-container{ height:auto !important; min-height:calc(100svh - var(--sticky-h)) !important; padding-bottom:0; }
+  .content-wrapper{ padding-bottom:18px; margin-bottom:calc(var(--sticky-h) + 8px); }
+  .scroll-hero{ position: static !important; margin-top: 12px; margin-bottom: calc(var(--sticky-h) + 8px) !important; z-index: 1; }
   .socials { flex-wrap: wrap; row-gap: 10px; }
   .social-icon { width: 44px; height: 44px; }
-
-  /* Mică relaxare a animațiilor pe mobil */
   .layer-1 { animation-duration: 26s; opacity: .26; }
   .layer-2 { animation-duration: 36s; opacity: .18; transform: scale(1.12); }
-
-  /* Titluri & text mai compacte pe ecrane înguste */
   .title { margin-bottom: .75rem; }
   .subtitle { margin-bottom: 1rem; }
-
-  /* CTA plin pe mobil (dar nu afectează desktop) */
   .btn-primary { width: 100%; max-width: 480px; }
 }
-
-/* 2) Telefoane foarte înguste */
 @media (max-width: 360px) {
   .content-wrapper { padding: 12px; }
   .icon { width: 18px; height: 18px; }
 }
+@media (prefers-reduced-motion: reduce) { .layer-1, .layer-2, .logo { animation: none !important; transition: none !important; } }
+@media (max-width: 576px) { .content-wrapper { overflow-wrap: anywhere; contain: layout paint; } }
+@supports (padding: max(0px)) { .sticky-bar { padding-bottom: max(.5rem, env(safe-area-inset-bottom)); } }
 
-/* 3) Accesibilitate & "reduced motion" (nu afectează layout) */
-@media (prefers-reduced-motion: reduce) {
-  .layer-1, .layer-2, .logo {
-    animation: none !important;
-    transition: none !important;
-  }
+/* poziționare sub email + săgeată */
+.scroll-hero{
+  display:flex; justify-content:center; margin-top:10px;
+  margin-bottom: calc(var(--sticky-h) + 8px);
+  position:relative; z-index:1201;
 }
 
-/* — tiny mobile safeguards — */
-@media (max-width: 576px) {
-  .content-wrapper { overflow-wrap: anywhere; }
-  .content-wrapper { contain: layout paint; }
+/* Scroll down – cerc cu două săgeți suprapuse */
+.scroll-down-btn{
+  display:block; position:relative; width:56px; height:56px; overflow:hidden;
+  background:transparent; border:0; cursor:pointer; outline:0; -webkit-tap-highlight-color:transparent;
 }
-
-/* iOS Safari – evită micile „săltări” la apariția safe area / tastatură */
-@supports (padding: max(0px)) {
-  .sticky-bar { padding-bottom: max(.5rem, env(safe-area-inset-bottom)); }
-}
-
-/* poziționare sub email */
-/* poziționare sub email */
-.scroll-hero {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-/* Scroll down – fix: NU mai rotim containerul; rotim doar SVG-urile și animăm pe Y */
-.scroll-down-btn {
-  display: block;
-  position: relative;
-  width: 56px;
-  height: 56px;
-  overflow: hidden;             /* ascunde iconul 2 până la hover */
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  outline: 0;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* inelele */
 .scroll-down-btn::before,
-.scroll-down-btn::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  inset: 7px;
+.scroll-down-btn::after{ content:""; position:absolute; border-radius:50%; inset:7px; }
+.scroll-down-btn::before{
+  border:4px solid #e9d8fd;
+  transition: opacity .4s cubic-bezier(.77,0,.175,1) 80ms, transform .5s cubic-bezier(.455,.03,.515,.955) 80ms;
+}
+.scroll-down-btn::after{
+  border:4px solid #7c3aed; transform:scale(1.3); opacity:0;
+  transition: opacity .4s cubic-bezier(.165,.84,.44,1), transform .5s cubic-bezier(.25,.46,.45,.94);
+}
+.scroll-down-btn:hover::before, .scroll-down-btn:focus-visible::before{ opacity:0; transform:scale(0.7); }
+.scroll-down-btn:hover::after,  .scroll-down-btn:focus-visible::after{ opacity:1; transform:scale(1); }
+
+/* centrează real grupul de săgeți în cerc */
+.scroll-down-btn .button-box{
+  display:flex; flex-direction:column; position:absolute; top:0; left:0;
+  width:56px; height:112px; transform:translateY(0); transition:transform .4s; will-change:transform;
+}
+.scroll-down-btn .button-elem{ display:block; width:20px; height:20px; margin:18px; }
+.scroll-down-btn .button-elem svg{ width:20px; height:20px; display:block; transform:rotate(90deg); transform-origin:50% 50%; fill:#4c1d95; }
+.scroll-down-btn:hover .button-box, .scroll-down-btn:focus-visible .button-box{ transform:translateY(-56px); }
+.scroll-down-btn:focus-visible{ outline:2px solid #7c3aed33; outline-offset:4px; }
+@media (hover:none){
+  .scroll-down-btn:hover .button-box, .scroll-down-btn:focus .button-box, .scroll-down-btn:focus-visible .button-box{ transform:none !important; }
 }
 
-.scroll-down-btn::before {
-  border: 4px solid #e9d8fd;
-  transition:
-    opacity .4s cubic-bezier(.77,0,.175,1) 80ms,
-    transform .5s cubic-bezier(.455,.03,.515,.955) 80ms;
+/* Loader */
+.loader{
+  --c1:#673b14; --c2:#f8b13b; width:40px; height:80px;
+  border-top:4px solid var(--c1); border-bottom:4px solid var(--c1);
+  background:linear-gradient(90deg,var(--c1) 2px,var(--c2) 0 5px,var(--c1) 0) 50%/7px 8px no-repeat;
+  display:grid; overflow:hidden; animation:l5-0 2s infinite linear;
 }
-
-.scroll-down-btn::after {
-  border: 4px solid #7c3aed;
-  transform: scale(1.3);
-  opacity: 0;
-  transition:
-    opacity .4s cubic-bezier(.165,.84,.44,1),
-    transform .5s cubic-bezier(.25,.46,.45,.94);
-}
-
-.scroll-down-btn:hover::before,
-.scroll-down-btn:focus-visible::before {
-  opacity: 0;
-  transform: scale(0.7);
-}
-
-.scroll-down-btn:hover::after,
-.scroll-down-btn:focus-visible::after {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* cutia cu cele 2 săgeți – acum pe coloană, nu pe rând */
-.scroll-down-btn .button-box {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: transform .4s;
-}
-
-/* fiecare săgeată */
-.scroll-down-btn .button-elem {
-  display: block;
-  width: 20px;
-  height: 20px;
-  margin: 18px; /* 18px pe toate laturile */
-}
-
-/* rotim efectiv iconul spre JOS; nu mai folosim rotate pe container */
-.scroll-down-btn .button-elem svg {
-  width: 20px;
-  height: 20px;
-  display: block;
-  transform: rotate(90deg);           /* <- devine down arrow */
-  transform-origin: 50% 50%;
-  fill: #4c1d95;
-}
-
-/* la hover, glisăm box-ul în sus cu exact 56px (înălțimea butonului) */
-.scroll-down-btn:hover .button-box,
-.scroll-down-btn:focus-visible .button-box {
-  transform: translateY(-56px);
-}
-
-/* accesibilitate */
-.scroll-down-btn:focus-visible {
-  outline: 2px solid #7c3aed33;
-  outline-offset: 4px;
-}
-
-/* mobil */
-@media (max-width: 576px) {
-  /* ai deja --sticky-h: 56px pe :host în mobil */
-  .content-wrapper { padding-bottom: calc(var(--sticky-h) + 48px); }
-  .scroll-hero { margin-top: 12px; }        /* un pic de spațiu peste săgeată */
-  .scroll-down-btn { width: 56px; height: 56px; }  /* țintă mai mare pe touch */
-}
-
-@media (hover: none) {
-  .scroll-down-btn:hover .button-box,
-  .scroll-down-btn:focus .button-box,
-  .scroll-down-btn:focus-visible .button-box {
-    transform: none !important;
-  }
-}
-
-/* Siguranță: dacă tot e aproape de bară, un mic offset vizual */
-.scroll-hero { margin-bottom: 6px; }
-
-.loader {
-  --c1: #673b14;
-  --c2: #f8b13b;
-  width: 40px;
-  height: 80px;
-  border-top: 4px solid var(--c1);
-  border-bottom: 4px solid var(--c1);
-  background: linear-gradient(90deg, var(--c1) 2px, var(--c2) 0 5px,var(--c1) 0) 50%/7px 8px no-repeat;
-  display: grid;
-  overflow: hidden;
-  animation: l5-0 2s infinite linear;
-}
-
 .loader::before,
-.loader::after {
-  content: "";
-  grid-area: 1/1;
-  width: 75%;
-  height: calc(50% - 4px);
-  margin: 0 auto;
-  border: 2px solid var(--c1);
-  border-top: 0;
-  box-sizing: content-box;
-  border-radius: 0 0 40% 40%;
-  -webkit-mask: linear-gradient(#000 0 0) bottom/4px 2px no-repeat,
-                 linear-gradient(#000 0 0);
-          mask: linear-gradient(#000 0 0) bottom/4px 2px no-repeat,
-                 linear-gradient(#000 0 0);
+.loader::after{
+  content:""; grid-area:1/1; width:75%; height:calc(50% - 4px); margin:0 auto; border:2px solid var(--c1); border-top:0;
+  box-sizing:content-box; border-radius:0 0 40% 40%;
+  -webkit-mask: linear-gradient(#000 0 0) bottom/4px 2px no-repeat, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) bottom/4px 2px no-repeat, linear-gradient(#000 0 0);
+  -webkit-mask-composite: destination-out; mask-composite: exclude;
+  background: linear-gradient(var(--d,0deg),var(--c2) 50%,#0000 0) bottom/100% 205%, linear-gradient(var(--c2) 0 0) center/0 100%;
+  background-repeat:no-repeat; animation:inherit; animation-name:l5-1;
+}
+.loader::after{ transform-origin:50% calc(100% + 2px); transform:scaleY(-1); --s:3px; --d:180deg; }
+@keyframes l5-0{ 80%{ transform:rotate(0) } 100%{ transform:rotate(0.5turn) } }
+@keyframes l5-1{ 10%,70%{ background-size:100% 205%,var(--s,0) 100% } 70%,100%{ background-position:top,center } }
+.loader.dorius{ --c1:#4c1d95; --c2:#7c3aed; filter: drop-shadow(0 6px 14px rgba(76,29,149,.18)); }
+.loader.dorius{ width:32px; height:64px; }
 
-  -webkit-mask-composite: destination-out; /* Safari */
-          mask-composite: exclude;
-  background: linear-gradient(var(--d,0deg),var(--c2) 50%,#0000 0) bottom /100% 205%,
-    linear-gradient(var(--c2) 0 0) center/0 100%;
-  background-repeat: no-repeat;
-  animation: inherit;
-  animation-name: l5-1;
+/* === Beneficii — redesign card === */
+.benefits-grid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:16px;
+  margin: 1.1rem auto .6rem;
+  padding:0;
+  list-style:none;
+  max-width: 980px;
 }
 
-.loader::after {
-  transform-origin: 50% calc(100% + 2px);
-  transform: scaleY(-1);
-  --s: 3px;
-  --d: 180deg;
+.benefit{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:8px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: #ffffff;
+  border:1px solid #e8ddff;
+  box-shadow: 0 1px 0 rgba(124,58,237,.02), 0 8px 24px rgba(76,29,149,.06);
+  min-height: 190px;
+  transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.benefit:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 2px 0 rgba(124,58,237,.04), 0 14px 34px rgba(76,29,149,.10);
+  border-color:#d8c7ff;
 }
 
-@keyframes l5-0 {
-  80% {
-    transform: rotate(0)
-  }
-
-  100% {
-    transform: rotate(0.5turn)
-  }
+.b-ic{
+  --s: 44px;
+  width: var(--s);
+  height: var(--s);
+  display:grid;
+  place-items:center;
+  font-size: 1.1rem;
+  color:#4c1d95;
+  background: radial-gradient(100% 100% at 50% 0%, #f4efff 0%, #ffffff 100%);
+  border: 1px solid #e0d0ff;
+  border-radius: 999px;
+  box-shadow: inset 0 -2px 6px rgba(124,58,237,.06);
 }
 
-@keyframes l5-1 {
-  10%,70% {
-    background-size: 100% 205%,var(--s,0) 100%
-  }
-
-  70%,100% {
-    background-position: top,center
-  }
+.b-title{
+  font-weight:800;
+  color:#4c1d95;
+  font-size: clamp(1rem, 1.6vw, 1.05rem);
+  line-height:1.25;
+  display:flex;
+  align-items:center;
+  justify-content:center;   /* asigură centrul pe mobil */
+  text-align:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:4px;
+}
+.b-title .b-badge{
+  align-self:center;
 }
 
-/* Tema Dorius pentru clepsidora CSS */
-.loader.dorius{
-  --c1: #4c1d95;   /* mov închis (rame, contur) */
-  --c2: #7c3aed;   /* mov deschis (nisip) */
-  filter: drop-shadow(0 6px 14px rgba(76,29,149,.18));
+.b-sub{
+  color:#4a5568;
+  font-size: .96rem;
+  line-height: 1.45;
+  margin-top: 2px;
+}
+.b-sub a{ color:#7c3aed; text-decoration:none; border-bottom:1px dashed #d6bcfa; }
+.b-sub a:hover{ text-decoration:underline; }
+
+.benefit.is-promo{
+  background: radial-gradient(120% 120% at 0% 0%, #f7f2ff 0%, #ffffff 70%);
+  border-color:#cdbcfb;
+  box-shadow: 0 2px 0 rgba(124,58,237,.05), 0 18px 36px rgba(124,58,237,.14);
+}
+.benefit.is-promo .b-ic{
+  background: radial-gradient(120% 120% at 30% 0%, #efe7ff 0%, #ffffff 100%);
+  border-color:#cdbcfb;
+}
+.b-badge{
+  font-size:.72rem;
+  font-weight:800;
+  padding:.16rem .46rem;
+  border-radius:999px;
+  background:#efe7ff;
+  color:#4c1d95;
+  border:1px solid #e0d0ff;
 }
 
-.loader.dorius { width: 32px; height: 64px; }   /* mică */
-
-/* (opțional) respectă preferința de reducere a animațiilor */
-@media (prefers-reduced-motion: reduce){
-  .loader{ animation: none; }
-  .loader::before, .loader::after{ animation: none; }
+.benefits-note{
+  margin:.35rem 0 1.15rem;
+  font-size:.85rem;
+  color:#6b7280;
+  text-align:center;
 }
 
-/* ==== MOBILE: hero = 100svh - sticky, iar săgeata nu mai e sticky ==== */
-@media (max-width: 576px) {
-  :host { --sticky-h: 72px; } /* 56px e insuficient când textul rupe pe 2 rânduri */
-
-  /* Hero-ul nu mai ocupă 100% din ecran, ci minus bara */
-  .coming-soon-container{
-    height: auto !important;
-    min-height: calc(100svh - var(--sticky-h)) !important;
-    padding-bottom: 0;
-  }
-
-  /* Cardul are loc sub el pentru bară; nu mai e acoperit nimic */
-  .content-wrapper{
-    padding-bottom: 18px;
-    margin-bottom: calc(var(--sticky-h) + 8px);
-  }
-
-  /* Săgeata devine statică și stă deasupra barei, fără să calce CTA-ul */
-  .scroll-hero{
-    position: static !important;
-    margin-top: 12px;
-    margin-bottom: calc(var(--sticky-h) + 8px) !important;
-    z-index: 1;
-  }
-
-  .scroll-down-btn{ width:56px; height:56px; }
+/* 3 coloane pe desktop */
+@media (min-width: 840px){
+  .benefits-grid{ grid-template-columns: repeat(3, 1fr); }
 }
-

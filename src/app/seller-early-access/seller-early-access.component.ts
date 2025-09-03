@@ -42,7 +42,8 @@ interface FormShape {
   styleUrls: ['./seller-early-access.component.scss']
 })
 export class SellerEarlyAccessComponent implements OnDestroy {
-  @Output() submittedChange = new EventEmitter<boolean>();   // 👈 pentru sticky bar
+  @Output() submittedChange = new EventEmitter<boolean>();
+  showFees = false;
 
   form: FormGroup<FormShape> = this.fb.group<FormShape>({
     email: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.email, Validators.maxLength(120)] }),
@@ -202,6 +203,9 @@ export class SellerEarlyAccessComponent implements OnDestroy {
     this.showTerms = false;
     document.body.style.overflow = '';
   }
+
+  openFees(){ this.showFees = true; }
+  closeFees(){ this.showFees = false; }
 
   ngOnDestroy(): void {
     this.destroy$.next();

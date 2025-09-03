@@ -23,6 +23,32 @@ h1 { font-size: clamp(1.6rem, 3.5vw, 2rem); color: #4c1d95; margin: 0 0 8px; }
 .subtitle { color: #2d3748; margin: 0 0 18px; line-height: 1.55; }
 form { margin-top: 10px; }
 
+/* === Documente utile (chips) === */
+.doc-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: .75rem 0 1.25rem;
+}
+.doc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem .8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  background: rgba(124, 58, 237, 0.06);
+  color: #4c1d95;
+  font-size: .9rem;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .08s ease, background .2s ease, border-color .2s ease;
+}
+.doc-chip:hover { background: rgba(124, 58, 237, 0.12); border-color: rgba(124, 58, 237, 0.35); }
+.doc-chip:active { transform: translateY(1px); }
+.doc-chip .ic { font-size: 1rem; }
+
 /* === layout principal === */
 .grid {
   display: grid;
@@ -55,7 +81,7 @@ input[type="checkbox"] {
   accent-color: #7c3aed;
 }
 
-/* === chips === */
+/* === chips (pentru câmpul „Unde vinzi acum?”) === */
 .label-inline { display: inline-block; margin-bottom: 6px; font-weight: 600; color: #2d3748; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
@@ -129,24 +155,49 @@ details.optional[open] > summary:after { transform: rotate(180deg); }
 .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(124, 58, 237, 0.32); }
 .btn[disabled] { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
 
+/* link buton pentru header-ul modalului (ex: Deschide în fereastră nouă) */
+.btn-link {
+  font-weight: 600;
+  color: #4c1d95;
+  text-decoration: none;
+  margin-right: auto;
+  margin-left: 12px;
+}
+.btn-link:hover { text-decoration: underline; }
+
 /* diverse */
 .error { margin-top: 8px; color: #c0392b; }
 .hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
 .footnote { color: #4a5568; font-size: .9rem; margin-top: 10px; }
 
-/* modal */
+/* modal (generic) */
 .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 9998; }
 .modal { position: fixed; inset: 0; display: grid; place-items: center; z-index: 9999; }
 .modal-card {
   width: min(720px, 92vw); background: #fff; color: #2d3748;
   border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,.25);
   animation: modalIn .2s ease-out; max-height: 85vh; overflow: auto;
+  box-sizing: border-box;
 }
-.modal-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #eee; }
+.modal-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid #eee; }
 .modal-head h2 { font-size: 1.15rem; margin: 0; color: #4c1d95; }
 .modal-close { border: 0; background: transparent; font-size: 24px; line-height: 1; cursor: pointer; }
 .modal-body { padding: 16px; }
 @keyframes modalIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* === Modal Comisioane (PDF) === */
+.modal-card.wide {
+  max-width: min(1100px, 96vw);
+  width: 100%;
+}
+.pdf-body { padding: 0; }
+.pdf-frame {
+  display: block;
+  width: 100%;
+  height: min(78vh, 900px);
+  border: none;
+  background: #111;
+}
 
 .hint { color:#666; display:block; margin-top:6px; font-size:.875rem; }
 
@@ -177,6 +228,8 @@ details.optional[open] > summary:after { transform: rotate(180deg); }
     margin: 0 0 14px; 
     line-height: 1.55; 
   }
+  .doc-links { gap: .45rem; margin-bottom: 1rem; }
+  .doc-chip { padding: .45rem .7rem; font-size: .92rem; }
   .grid       { gap: 12px; }
   .opt-grid   { gap: 12px; }
   .full       { grid-column: 1 / -1; }
