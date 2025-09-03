@@ -92,12 +92,33 @@
 
 /* Sticky bar */
 .sticky-bar{
-  position:fixed; bottom:0; left:0; width:100%;
-  background:#4c1d95; color:#fff; text-align:center;
-  padding:clamp(.5rem,2vw,.75rem) 1rem;
-  font-size:clamp(.8rem,2vw,.95rem); font-weight:500;
-  z-index:1100; box-shadow:0 -2px 10px rgba(0,0,0,.1);
+  position:fixed; bottom:0; left:0; right:0; /* width:auto evită bugurile de 100vw */
+  box-sizing: border-box;
+  background:#4c1d95; color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  padding: .65rem 14px;                 /* padding orizontal fix */
+  font-size:clamp(.8rem,2.8vw,.95rem);
+  line-height:1.25;
+  text-align:center;
+  z-index:1100;
+  box-shadow:0 -2px 10px rgba(0,0,0,.1);
   animation:slideUp 1s ease;
+  overflow-wrap: anywhere;              /* nu mai iese textul din ecran */
+  word-break: normal;
+}
+.sticky-bar > span{
+  display:block;
+  max-width: min(820px, calc(100% - 20px)); /* mic gutter intern pentru text */
+  text-wrap: balance;                        /* frumos pe 2 rânduri (unde e suportat) */
+}
+
+/* iOS notch / safe areas (stânga, dreapta, jos) */
+@supports (padding: max(0px)) {
+  .sticky-bar{
+    padding-left:  max(14px, env(safe-area-inset-left));
+    padding-right: max(14px, env(safe-area-inset-right));
+    padding-bottom: max(.65rem, env(safe-area-inset-bottom));
+  }
 }
 
 /* --- FORM SECTION --- */
