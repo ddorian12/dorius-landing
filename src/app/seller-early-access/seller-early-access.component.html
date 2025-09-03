@@ -13,9 +13,9 @@
       <a class="doc-chip" href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer" aria-label="Politica de confidențialitate (PDF)">
         <span class="ic">🔒</span> Confidențialitate
       </a>
-      <button type="button" class="doc-chip" (click)="openFees()" aria-label="Comisioane (previzualizare PDF)">
+      <a class="doc-chip" role="button" class="doc-chip" (click)="openFees()" aria-label="Comisioane (previzualizare PDF)">
         <span class="ic">💸</span> Comisioane
-      </button>
+      </a>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
