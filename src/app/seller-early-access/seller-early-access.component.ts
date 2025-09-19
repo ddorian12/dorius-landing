@@ -101,7 +101,7 @@ export class SellerEarlyAccessComponent implements OnDestroy {
     { label: 'Altă țară', value: 'OTHER' },
   ];
 
-  channelsOptions = ['Website', 'Instagram', 'StanStore', 'Etsy', 'eMAG', 'Alt marketplace'];
+  channelsOptions = ['Website', 'Instagram', 'TikTok', 'Etsy', 'eMAG', 'Alt marketplace'];
   estOrdersOptions = ['0–10', '10–50', '50–200', '200+'];
 
   fulfillmentOptions: {label: string; value: Fulfillment}[] = [
