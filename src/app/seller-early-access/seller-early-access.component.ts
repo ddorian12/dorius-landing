@@ -2,9 +2,9 @@ import { Component, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil, filter } from 'rxjs/operators';
 import { SellerEarlyAccessService } from '../seller-early-access.service';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router, NavigationStart } from '@angular/router';
 
 type ProductScope = 'Digital' | 'Physical' | 'Both';
 type Readiness = 'now' | 'later';
@@ -44,7 +44,15 @@ interface FormShape {
 })
 export class SellerEarlyAccessComponent implements OnDestroy {
   @Output() submittedChange = new EventEmitter<boolean>();
+
+  showTerms = false;
   showFees = false;
+
+  submitting = false;
+  submitted = false;
+  errorMsg = '';
+
+  private destroy$ = new Subject<void>();
 
   form: FormGroup<FormShape> = this.fb.group<FormShape>({
     email: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.email, Validators.maxLength(120)] }),
@@ -70,12 +78,6 @@ export class SellerEarlyAccessComponent implements OnDestroy {
     referral: this.fb.nonNullable.control(''),
     marketingOptIn: this.fb.nonNullable.control(false),
   });
-
-  submitting = false;
-  submitted = false;
-  errorMsg = '';
-  showTerms = false;
-  private destroy$ = new Subject<void>();
 
   productScopeOptions = [
     { label: 'Produse digitale', value: 'Digital' as ProductScope },
@@ -111,7 +113,19 @@ export class SellerEarlyAccessComponent implements OnDestroy {
 
   referralOptions = ['Instagram', 'TikTok', 'Facebook', 'Google', 'Prieteni/Comunitate', 'Altă sursă'];
 
-  constructor(private fb: FormBuilder, private service: SellerEarlyAccessService) {}
+  constructor(
+    private fb: FormBuilder,
+    private service: SellerEarlyAccessService,
+    private router: Router
+  ) {
+    // Safety net: dacă începe o navigare, deblochează body-ul
+    this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationStart),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => this.unlockBodyScroll());
+  }
 
   // Getters
   get email() { return this.form.controls.email; }
@@ -141,7 +155,7 @@ export class SellerEarlyAccessComponent implements OnDestroy {
     // honeypot
     if (this.form.controls.company.value.trim()) {
       this.submitted = true;
-      this.submittedChange.emit(true);   // 👈 anunțăm părintele
+      this.submittedChange.emit(true);
       return;
     }
 
@@ -185,8 +199,7 @@ export class SellerEarlyAccessComponent implements OnDestroy {
       .subscribe({
         next: () => {
           this.submitted = true;
-          this.submittedChange.emit(true);         // 👈 pentru sticky bar
-          // focus/scroll pe cardul de succes (accesibilitate)
+          this.submittedChange.emit(true);
           setTimeout(() => document.querySelector('.ea-card.success')?.scrollIntoView({ behavior: 'smooth' }), 0);
         },
         error: (err) => {
@@ -195,20 +208,51 @@ export class SellerEarlyAccessComponent implements OnDestroy {
       });
   }
 
+  /** MODALS */
   openTerms() {
     this.showTerms = true;
-    document.body.style.overflow = 'hidden';
+    this.lockBodyScroll();
   }
-
   closeTerms() {
     this.showTerms = false;
-    document.body.style.overflow = '';
+    this.unlockBodyScroll();
   }
 
-  openFees(){ this.showFees = true; }
-  closeFees(){ this.showFees = false; }
+  openFees() {
+    this.showFees = true;
+    this.lockBodyScroll();
+  }
+  
+  closeFees() {
+    this.showFees = false;
+    this.unlockBodyScroll();
+  }
+
+  /** Navigare din modal: închide + deblochează, apoi navighează */
+  navigateFromModal(url: string, ev: Event) {
+    ev.preventDefault();
+    this.showTerms = false;
+    this.showFees = false;
+    this.unlockBodyScroll();
+    setTimeout(() => this.router.navigateByUrl(url), 0);
+  }
+
+  /** Scroll lock helpers (cu compensare scrollbar) */
+  private lockBodyScroll() {
+    const body = document.body;
+    const docEl = document.documentElement;
+    const scrollbar = window.innerWidth - docEl.clientWidth;
+    body.style.overflow = 'hidden';
+    if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
+  }
+  private unlockBodyScroll() {
+    const body = document.body;
+    body.style.overflow = '';
+    body.style.paddingRight = '';
+  }
 
   ngOnDestroy(): void {
+    this.unlockBodyScroll();
     this.destroy$.next();
     this.destroy$.complete();
   }

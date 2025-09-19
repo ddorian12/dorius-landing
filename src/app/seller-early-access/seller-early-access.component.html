@@ -21,7 +21,6 @@
           <span>Email *</span>
           <input type="email" formControlName="email" placeholder="ex: hello@brand.ro" autocomplete="email"/>
           <small class="err" *ngIf="email.touched && email.invalid" role="alert">Introdu un email valid.</small>
-          <!-- 👇 HINT upsert -->
           <small class="hint" *ngIf="email.valid">
             Dacă ai mai trimis o înscriere cu acest email, noile informații îți vor
             <strong>actualiza automat</strong> înregistrarea existentă.
@@ -99,7 +98,7 @@
           <div class="chips">
             <button type="button" class="chip" [class.active]="hasChannel('Website')"   (click)="toggleChannel('Website')">Website propriu</button>
             <button type="button" class="chip" [class.active]="hasChannel('Instagram')" (click)="toggleChannel('Instagram')">Instagram</button>
-            <button type="button" class="chip" [class.active]="hasChannel('StanStore')"    (click)="toggleChannel('StanStore')">Stan Store</button>
+            <button type="button" class="chip" [class.active]="hasChannel('StanStore')" (click)="toggleChannel('StanStore')">Stan Store</button>
             <button type="button" class="chip" [class.active]="hasChannel('Etsy')"      (click)="toggleChannel('Etsy')">Etsy</button>
             <button type="button" class="chip" [class.active]="hasChannel('eMAG')"      (click)="toggleChannel('eMAG')">eMAG</button>
             <button type="button" class="chip" [class.active]="hasChannel('Alt marketplace')" (click)="toggleChannel('Alt marketplace')">Alt marketplace</button>
@@ -179,11 +178,7 @@
           </span>
 
           <button type="button" class="info-btn" (click)="openTerms()" aria-label="Vezi pe scurt Termenii & Politica">
-            <svg viewBox="0 0 24 24" class="info-ic" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="8"></line>
-              <line x1="12" y1="12" x2="12" y2="16"></line>
-            </svg>
+            <img src="assets/info.svg" class="nav-icon" width="20" height="20" alt="" />
           </button>
         </label>
 
@@ -225,9 +220,9 @@
           <li>Nu vindem și nu partajăm datele tale în scopuri de marketing ale terților.</li>
         </ul>
         <p>Versiunea completă:
-          <a href="assets/policies/termeni-si-conditii.pdf" target="_blank" rel="noopener noreferrer">Termenii</a> și
-          <a href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>,
-          precum și <a href="assets/policies/comisioane-dorius.pdf" target="_blank" rel="noopener noreferrer">Comisioane</a>.
+          <a href (click)="navigateFromModal('/termeni', $event)">Termenii</a> și
+          <a href (click)="navigateFromModal('/confidentialitate', $event)">Politica de confidențialitate</a>,
+          precum și <a href (click)="navigateFromModal('/comisioane', $event)">Comisioane</a>.
         </p>
       </div>
     </div>
