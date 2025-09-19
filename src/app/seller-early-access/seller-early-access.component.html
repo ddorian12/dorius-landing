@@ -7,15 +7,9 @@
     </p>
 
     <div class="doc-links" aria-label="Documente utile">
-      <a class="doc-chip" href="assets/policies/termeni-si-conditii.pdf" target="_blank" rel="noopener noreferrer" aria-label="Termeni și condiții (PDF)">
-        <span class="ic">📄</span> Termeni
-      </a>
-      <a class="doc-chip" href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer" aria-label="Politica de confidențialitate (PDF)">
-        <span class="ic">🔒</span> Confidențialitate
-      </a>
-      <a class="doc-chip" role="button" class="doc-chip" (click)="openFees()" aria-label="Comisioane (previzualizare PDF)">
-        <span class="ic">💸</span> Comisioane
-      </a>
+      <a class="doc-chip" routerLink="/termeni"> <span class="ic">📄</span> Termeni </a>
+      <a class="doc-chip" routerLink="/confidentialitate"> <span class="ic">🔒</span> Confidențialitate </a>
+      <a class="doc-chip" routerLink="/comisioane"> <span class="ic">💸</span> Comisioane </a>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
@@ -105,7 +99,7 @@
           <div class="chips">
             <button type="button" class="chip" [class.active]="hasChannel('Website')"   (click)="toggleChannel('Website')">Website propriu</button>
             <button type="button" class="chip" [class.active]="hasChannel('Instagram')" (click)="toggleChannel('Instagram')">Instagram</button>
-            <button type="button" class="chip" [class.active]="hasChannel('TikTok')"    (click)="toggleChannel('TikTok')">TikTok</button>
+            <button type="button" class="chip" [class.active]="hasChannel('StanStore')"    (click)="toggleChannel('StanStore')">Stan Store</button>
             <button type="button" class="chip" [class.active]="hasChannel('Etsy')"      (click)="toggleChannel('Etsy')">Etsy</button>
             <button type="button" class="chip" [class.active]="hasChannel('eMAG')"      (click)="toggleChannel('eMAG')">eMAG</button>
             <button type="button" class="chip" [class.active]="hasChannel('Alt marketplace')" (click)="toggleChannel('Alt marketplace')">Alt marketplace</button>
@@ -179,9 +173,9 @@
           <input type="checkbox" formControlName="acceptTerms" />
           <span>
             Sunt de acord cu
-            <a href="assets/policies/termeni-si-conditii.pdf" target="_blank" rel="noopener noreferrer">Termenii</a> și
-            <a href="assets/policies/politica-confidentialitate.pdf" target="_blank" rel="noopener noreferrer">Politica de confidențialitate</a>,
-            precum și cu <a href="assets/policies/comisioane-dorius.pdf" target="_blank" rel="noopener noreferrer">Comisioanele</a>.
+              <a routerLink="/termeni">Termenii</a> și
+              <a routerLink="/confidentialitate">Politica de confidențialitate</a>,
+              precum și cu <a routerLink="/comisioane">Comisioanele</a>.
           </span>
 
           <button type="button" class="info-btn" (click)="openTerms()" aria-label="Vezi pe scurt Termenii & Politica">

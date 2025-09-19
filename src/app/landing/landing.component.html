@@ -1,0 +1,104 @@
+<div class="coming-soon-container" #heroSection>
+  <div class="parallax-background">
+    <div class="layer layer-1"></div>
+    <div class="layer layer-2"></div>
+  </div>
+
+  <div class="content-wrapper">
+    <img src="assets/logo2.png" alt="Dorius Logo" class="logo" />
+
+    <h1 class="title">Înscrieri deschise pentru selleri – Etapa 1</h1>
+    <p class="subtitle">
+      Produse digitale și fizice de calitate. Creat cu pasiune, livrat cu stil.
+    </p>
+
+    <div class="announcement">
+      <span class="badge">A început <strong>Etapa 1</strong> — Înscrieri pentru selleri</span>
+      <p class="status-line">🛠️ Site-ul este în lucru.</p>
+
+      <div class="loader dorius"></div>
+
+      <p class="status-line">
+        🚀 Curând lansăm oficial aplicația. Între timp, <strong>te poți alătura printre primii vânzători pe Dorius.</strong>
+      </p>
+      <button class="btn-primary" (click)="scrollToForm()" aria-label="Înscrie-te ca vânzător">
+        Înscrie-te ca vânzător
+      </button>
+    </div>
+
+    <ul class="benefits-grid" aria-label="Beneficii pentru selleri">
+      <li class="benefit">
+        <span class="b-ic" aria-hidden="true">⚡</span>
+        <span class="b-title">Vânzări rapide</span>
+        <span class="b-sub">Listing simplu, timp minim până la primele comenzi.</span>
+      </li>
+
+      <li class="benefit">
+        <span class="b-ic" aria-hidden="true">🔒</span>
+        <span class="b-title">Plăți sigure cu Stripe</span>
+        <span class="b-sub">Onboarding transparent, încasări protejate.</span>
+      </li>
+
+      <li class="benefit is-promo">
+        <span class="b-ic" aria-hidden="true">💜</span>
+        <span class="b-title">
+          0% comision în prima lună
+          <span class="b-badge">Etapa 1</span>
+        </span>
+        <span class="b-sub">
+          Start fără costuri de vânzare.
+          <a routerLink="/comisioane">Detalii</a>
+        </span>
+      </li>
+    </ul>
+
+    <p class="benefits-note">
+      *Se aplică termeni & condiții. Vezi
+      <a routerLink="/comisioane">Comisioane</a>
+    </p>
+
+    <div class="socials">
+      <a href="https://www.facebook.com/share/19MBaqzSLR/" target="_blank" aria-label="Facebook" class="social-icon">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/dorius.ro/profilecard/?igsh=eXZqc21tNm90OWNi" target="_blank" aria-label="Instagram" class="social-icon">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.948-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="mailto:contact@dorius.ro" aria-label="Email" class="social-icon">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+          <path d="M2 6l10 8 10-8"/>
+        </svg>
+      </a>
+    </div>
+
+    <p class="contact">contact&#64;dorius.ro</p>
+
+    <div class="scroll-hero">
+      <button class="scroll-down-btn"
+        (click)="scrollToForm(); $any($event.currentTarget).blur()"
+        aria-label="Derulează la formular">
+        <div class="button-box">
+          <span class="button-elem">
+            <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+              <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/>
+            </svg>
+          </span>
+          <span class="button-elem">
+            <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+              <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"/>
+            </svg>
+          </span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="sticky-bar" *ngIf="!hideStickyBar">
+  <span>Completează formularul pentru a te înscrie ca vânzător.</span>
+</div>
+
+<div id="formSection" #formSection *ngIf="formVisible" class="form-section">
+  <app-seller-early-access (submittedChange)="onFormSubmitted($event)"></app-seller-early-access>
+</div>

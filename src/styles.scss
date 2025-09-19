@@ -1,4 +1,132 @@
 body {
   margin: 0;
 }
+/* ===== Dorius Global Base ===== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
+:root{
+  --d-text: #1a1c1e;
+  --d-subtle: #5a5f66;
+  --d-border: #e9eaee;
+  --d-bg: #ffffff;
+  --d-bg-soft: #fafbfc;
+  --d-primary: #7c3aed;      /* accent principal */
+  --d-primary-ink: #4c1d95;  /* accent închis */
+  --d-shadow: 0 10px 30px rgba(20,24,28,.10);
+  --radius: 16px;
+}
+
+/* fundal global în stil landing */
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  color: var(--d-text);
+  background:
+    radial-gradient(120% 120% at 0% 0%, #5b21b6 0%, rgba(124,58,237,0.25) 40%, transparent 70%),
+    linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
+}
+
+/* util – carduri albe peste gradient */
+.dorius-card {
+  background: #fff;
+  border: 1px solid rgba(124,58,237,.08);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.12);
+}
+
+/* linkuri globale (fallback) */
+a { color: var(--d-primary); }
+a:hover { color: var(--d-primary-ink); }
+
+/* ====== TABLES (global) ====== */
+
+/* 1) Aspect default tabel cu grilă (fără wrapper) */
+table { border-collapse: separate; border-spacing: 0; width: 100%; }
+
+.fees{
+  width:100%;
+  margin:12px 0 8px;
+  background:#fff;
+  border:1px solid #d9d2ff;
+  border-radius:12px;
+  overflow:hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 0 1px 0 rgba(124,58,237,.02);
+}
+
+.fees thead th{
+  background:#efe9ff;
+  color:#4c1d95;
+  font-weight:700;
+}
+
+.fees th, .fees td{
+  padding:12px 14px;
+  vertical-align:top;
+  border-bottom:1px solid #e6e0ff;
+}
+
+.fees th + th, .fees td + td{
+  border-left:1px solid #e6e0ff;
+}
+
+/* col. 1 mai lată; col. 2 centrată pentru valori % */
+.fees thead th:first-child,
+.fees tbody td:first-child{ width:62%; text-align:left; }
+.fees thead th:last-child,
+.fees tbody td:last-child{ width:38%; text-align:center; white-space:nowrap; }
+
+.fees tbody tr:nth-child(even) td{ background:#fcfbff; }
+
+/* 2) Wrapper scrollabil pentru mobil – recomandat */
+.table-wrap{
+  margin: 12px 0 8px;
+  border-radius: 12px;
+  overflow: auto;                         /* scroll pe X când e nevoie */
+  -webkit-overflow-scrolling: touch;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(124,58,237,.02);
+  border: 1px solid #d9d2ff;
+}
+
+/* când tabelul e în wrapper, cadrul e pe wrapper; tabelul primește min-width */
+.table-wrap .fees{
+  margin: 0;
+  min-width: 560px;                       /* 520–640 după preferință */
+  border: 0;
+  border-radius: 0;
+}
+
+/* ====== END TABLES ====== */
+
+/* Dark mode (opțional) */
+@media (prefers-color-scheme: dark) {
+  :root{
+    --d-text: #e8eaee;
+    --d-subtle: #a7afba;
+    --d-border: #2a2f36;
+    --d-bg: #101316;
+    --d-bg-soft: #151a1f;
+    --d-primary: #8f7dff;
+    --d-primary-ink: #c0b8ff;
+    --d-shadow: 0 12px 28px rgba(0,0,0,.5);
+  }
+  body {
+    background:
+      radial-gradient(120% 120% at 0% 0%, #4c1d95 0%, rgba(124,58,237,.22) 40%, transparent 70%),
+      linear-gradient(135deg, #0b0f14 0%, #121824 100%);
+  }
+}
+
+/* print – simplu și curat */
+@media print{
+  body{ background:#fff; color:#000; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+  /* tabele lizibile la print */
+  .table-wrap{ border:1px solid #000; box-shadow:none; overflow:visible; }
+  .table-wrap .fees th, .table-wrap .fees td{ border-bottom:1px solid #000; }
+  .table-wrap .fees th + th, .table-wrap .fees td + td{ border-left:1px solid #000; }
+  .table-wrap .fees thead th{ background:#fff; color:#000; }
+}
