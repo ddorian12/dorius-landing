@@ -19,8 +19,19 @@
         <!-- OBLIGATORII -->
         <label>
           <span>Email *</span>
-          <input type="email" formControlName="email" placeholder="ex: hello@brand.ro" autocomplete="email"/>
-          <small class="err" *ngIf="email.touched && email.invalid" role="alert">Introdu un email valid.</small>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="ex: hello@brand.ro"
+            autocomplete="email"
+            (blur)="email.setValue(email.value.trim())"
+          />
+          <small class="err" *ngIf="email.touched && email.errors?.['required']">
+            Emailul este obligatoriu.
+          </small>
+          <small class="err" *ngIf="email.touched && !email.errors?.['required'] && email.errors?.['emailStrict']">
+            Introdu un email valid (ex: numet&#64;domeniu.com).
+          </small>
           <small class="hint" *ngIf="email.valid">
             Dacă ai mai trimis o înscriere cu acest email, noile informații îți vor
             <strong>actualiza automat</strong> înregistrarea existentă.

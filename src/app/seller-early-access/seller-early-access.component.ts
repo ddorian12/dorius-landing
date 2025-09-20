@@ -1,6 +1,6 @@
 import { Component, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, Validators, ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule, FormControl, FormGroup, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil, filter } from 'rxjs/operators';
 import { SellerEarlyAccessService } from '../seller-early-access.service';
@@ -53,9 +53,17 @@ export class SellerEarlyAccessComponent implements OnDestroy {
   errorMsg = '';
 
   private destroy$ = new Subject<void>();
+  
+  strictEmail: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const v = (control.value ?? '').toString().trim();
+    if (!v) return null; // required se ocupă de lipsă
+    // minim un punct în domeniu + TLD ≥ 2
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    return re.test(v) ? null : { emailStrict: true };
+  };
 
   form: FormGroup<FormShape> = this.fb.group<FormShape>({
-    email: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.email, Validators.maxLength(120)] }),
+    email: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.maxLength(120), this.strictEmail] }),
     brandName: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.maxLength(40)] }),
     productScope: this.fb.nonNullable.control<ProductScope>('Digital', { validators: [Validators.required] }),
     productTypes: this.fb.nonNullable.control('', { validators: [Validators.maxLength(120)] }),
